@@ -1,0 +1,4 @@
+name: ServerBrowser
+main: strimy.bukkit.plugins.serverbrowser.ServerBrowser
+version: 0.1b
+

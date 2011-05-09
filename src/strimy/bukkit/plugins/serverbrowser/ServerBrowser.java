@@ -16,7 +16,8 @@ public class ServerBrowser extends JavaPlugin
 	@Override
 	public void onDisable() {
 		// TODO Auto-generated method stub
-
+		log.info("ServerBrowser unloaded");
+		sender.unload();
 	}
 
 	@Override

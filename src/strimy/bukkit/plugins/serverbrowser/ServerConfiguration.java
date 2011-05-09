@@ -39,6 +39,8 @@ public class ServerConfiguration
 	private String token;
 	private String password;
 	private String serverBrowserUrl;
+	private boolean isVerbose = false;
+	private Integer notifDelay = 60*5*1000;
 	
 	public String getServerBrowserUrl() {
 		return serverBrowserUrl;
@@ -56,6 +58,14 @@ public class ServerConfiguration
 		setPluginConfiguration();
 	}
 	
+	public boolean isVerbose() {
+		return isVerbose;
+	}
+
+	public void setVerbose(boolean isVerbose) {
+		this.isVerbose = isVerbose;
+	}
+
 	private void setPluginConfiguration()
 	{
 		if(new File(pluginConfigPath).exists())
@@ -269,5 +279,13 @@ public class ServerConfiguration
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public void setNotifDelay(Integer notifDelay) {
+		this.notifDelay = notifDelay;
+	}
+
+	public Integer getNotifDelay() {
+		return notifDelay;
 	}
 }

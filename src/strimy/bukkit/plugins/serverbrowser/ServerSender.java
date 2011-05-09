@@ -125,8 +125,11 @@ public class ServerSender
 	        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 	        rd.close();
 	        wr.close();
-
-			plugin.log.info("[ServerBrowser] Notification sent");
+	        if(config.isVerbose())
+	        {
+	        	plugin.log.info("[ServerBrowser] Notification sent");
+	        }
+			
 			restartTimer();
 		} 
 		catch (ParserConfigurationException e) 
@@ -165,6 +168,13 @@ public class ServerSender
 			timer.cancel();
 		
 		timer = new Timer();
-		timer.schedule(new NotificationScheduler(this), 1000*60*5);
-	}	
+		timer.schedule(new NotificationScheduler(this), config.getNotifDelay());
+	}
+	
+	public void unload()
+	{
+		timer.cancel();
+		timer.purge();
+		timer = null;
+	}
 }

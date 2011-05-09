@@ -15,20 +15,14 @@ public class SBPlayerListener extends PlayerListener
 	@Override
 	public void onPlayerJoin(PlayerJoinEvent event) 
 	{
-		stateChanged();
+		plugin.sender.sendInfos(null);
 		super.onPlayerJoin(event);
 	}
 	
 	@Override
 	public void onPlayerQuit(PlayerQuitEvent event) 
 	{
-		stateChanged();
+		plugin.sender.sendInfos(event.getPlayer());
 		super.onPlayerQuit(event);
-	}
-	
-	private void stateChanged()
-	{
-		plugin.config.refreshServerInfos();
-		plugin.sender.sendInfos();
 	}
 }

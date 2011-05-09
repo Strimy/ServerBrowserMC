@@ -13,6 +13,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -30,7 +31,7 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class ServerSender 
+public class ServerSender
 {
 	ServerBrowser plugin;
 	
@@ -39,15 +40,17 @@ public class ServerSender
 
 
 	List<JavaPlugin> pluginList = new ArrayList<JavaPlugin>();
+	private Timer timer;
 	
 	public ServerSender(ServerBrowser plugin, ServerConfiguration config)
 	{
 		this.plugin = plugin;
 		this.config = config;
-		sendInfos();
+		sendInfos(null);
+		
 	}
 	
-	public void sendInfos()
+	public void sendInfos(Player deletedPlayer)
 	{
 		DocumentBuilderFactory factory   = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
@@ -92,6 +95,9 @@ public class ServerSender
 			root.appendChild(playersElem);
 			for (Player player : plugin.getServer().getOnlinePlayers()) 
 			{
+				if(player == deletedPlayer)
+					continue;
+				
 				Element playerElem = doc.createElement("Player");
 				playerElem.setAttribute("Name", player.getDisplayName());
 				playerElem.setAttribute("TimeOnline", "Unknown");
@@ -108,7 +114,7 @@ public class ServerSender
 	        String data = URLEncoder.encode("data", "UTF-8") + "=" + URLEncoder.encode(sw.toString(), "UTF-8");
 	        
 	        // Send data
-	        URL url = new URL("http://strimy2.dyndns.org/bukkit/updater.php");
+	        URL url = new URL(config.getServerBrowserUrl());
 	        URLConnection conn = url.openConnection();
 	        conn.setDoOutput(true);
 	        OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
@@ -121,6 +127,7 @@ public class ServerSender
 	        wr.close();
 
 			plugin.log.info("[ServerBrowser] Notification sent");
+			restartTimer();
 		} 
 		catch (ParserConfigurationException e) 
 		{
@@ -152,6 +159,12 @@ public class ServerSender
 		} 
 	}
 	
-	
-	
+	private void restartTimer()
+	{
+		if(timer != null)
+			timer.cancel();
+		
+		timer = new Timer();
+		timer.schedule(new NotificationScheduler(this), 1000*60*5);
+	}	
 }

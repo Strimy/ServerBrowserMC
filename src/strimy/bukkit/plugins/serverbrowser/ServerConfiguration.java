@@ -38,7 +38,16 @@ public class ServerConfiguration
 	private boolean isPremiumOnly;
 	private String token;
 	private String password;
+	private String serverBrowserUrl;
 	
+	public String getServerBrowserUrl() {
+		return serverBrowserUrl;
+	}
+
+	public void setServerBrowserUrl(String serverBrowserUrl) {
+		this.serverBrowserUrl = serverBrowserUrl;
+	}
+
 	public ServerConfiguration(ServerBrowser plugin) 
 	{
 		this.plugin = plugin;
@@ -82,6 +91,9 @@ public class ServerConfiguration
 			Node tokenPasswordNode = root.getElementsByTagName("TokenPassword").item(0);
 			setPassword(tokenPasswordNode.getTextContent());
 			
+			Node serverBrowserUrlNode = root.getElementsByTagName("ServerBrowserUrl").item(0);
+			setServerBrowserUrl(serverBrowserUrlNode.getTextContent());
+			
 		}
 		catch(Exception e)
 		{
@@ -105,6 +117,10 @@ public class ServerConfiguration
 			Element serverNameElem = doc.createElement("ServerName");
 			serverNameElem.setTextContent("Your Server Name");
 			root.appendChild(serverNameElem);
+			
+			Element serverBrowserUrlElem = doc.createElement("ServerBrowserUrl");
+			serverBrowserUrlElem.setTextContent("The URL to the Web Server Browser");
+			root.appendChild(serverBrowserUrlElem);
 			
 			Element serverDnsElem = doc.createElement("ServerDNS");
 			serverDnsElem.setTextContent("Your DNS Name");

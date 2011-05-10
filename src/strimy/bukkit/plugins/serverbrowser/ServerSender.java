@@ -168,7 +168,7 @@ public class ServerSender
 			timer.cancel();
 		
 		timer = new Timer();
-		timer.schedule(new NotificationScheduler(this), config.getNotifDelay());
+		timer.schedule(new NotificationScheduler(this), config.getNotifDelay() * 1000);
 	}
 	
 	public void unload()

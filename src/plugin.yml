@@ -2,3 +2,7 @@ name: ServerBrowser
 main: strimy.bukkit.plugins.serverbrowser.ServerBrowser
 version: 0.1b
 
+commands:
+    sb: 
+        description: Configuration of the ServerBrowser
+        usage: /sb verbose|delay|dns|name|token|password

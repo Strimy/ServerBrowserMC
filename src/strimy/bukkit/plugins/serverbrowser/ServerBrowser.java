@@ -2,8 +2,10 @@ package strimy.bukkit.plugins.serverbrowser;
 
 import java.util.logging.Logger;
 
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
 
@@ -37,7 +39,16 @@ public class ServerBrowser extends JavaPlugin
 		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
 		
-
+		PluginCommand sbCommand = getCommand("sb");
+		if(sbCommand == null)
+		{
+			log.info(ChatColor.RED + "Command are disabled");
+		}
+		else
+		{
+			log.info(ChatColor.GOLD + "["+getDescription().getName()+"] Command /sb enabled to configure the plugin (op only)");
+			sbCommand.setExecutor(new SBCommandExecutor(this));
+		}
 	}
 
 }

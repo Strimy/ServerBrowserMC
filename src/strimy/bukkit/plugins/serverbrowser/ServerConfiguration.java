@@ -74,7 +74,7 @@ public class ServerConfiguration
 		}
 		else
 		{
-			createPluginConfiguration();
+			createNewPluginConfiguration();
 		}
 	}
 	
@@ -104,6 +104,17 @@ public class ServerConfiguration
 			Node serverBrowserUrlNode = root.getElementsByTagName("ServerBrowserUrl").item(0);
 			setServerBrowserUrl(serverBrowserUrlNode.getTextContent());
 			
+			Node notifDelayNode = root.getElementsByTagName("NotificationDelay").item(0);
+			if(notifDelayNode != null)
+			{
+				setNotifDelay(Integer.parseInt(notifDelayNode.getTextContent()));
+			}
+
+			Node verboseNode = root.getElementsByTagName("Verbose").item(0);
+			if(verboseNode != null)
+			{
+				setVerbose(Boolean.parseBoolean(verboseNode.getTextContent()));
+			}
 		}
 		catch(Exception e)
 		{
@@ -111,7 +122,61 @@ public class ServerConfiguration
 		}
 	}
 	
-	private void createPluginConfiguration()
+	public void savePluginConfiguration()
+	{
+		DocumentBuilderFactory factory   = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder;
+		try 
+		{
+			builder = factory.newDocumentBuilder();
+			DOMImplementation impl = builder.getDOMImplementation();
+			
+			doc = impl.createDocument(null, null, null);
+			root = doc.createElement("ServerConfig");
+			doc.appendChild(root);
+			
+			Element serverNameElem = doc.createElement("ServerName");
+			serverNameElem.setTextContent(getServerName());
+			root.appendChild(serverNameElem);
+			
+			Element serverBrowserUrlElem = doc.createElement("ServerBrowserUrl");
+			serverBrowserUrlElem.setTextContent(getServerBrowserUrl());
+			root.appendChild(serverBrowserUrlElem);
+			
+			Element serverDnsElem = doc.createElement("ServerDNS");
+			serverDnsElem.setTextContent(getDnsServer());
+			root.appendChild(serverDnsElem);
+			
+			// Create a token to identify the server
+			Element tokenElem = doc.createElement("Token");
+			tokenElem.setTextContent(getToken());
+			root.appendChild(tokenElem);
+			
+			Element passwordElem = doc.createElement("TokenPassword");
+			passwordElem.setTextContent(getPassword());
+			root.appendChild(passwordElem);
+			
+			Element notifElem = doc.createElement("NotificationDelay");
+			notifElem.setTextContent(String.valueOf(getNotifDelay()));
+			root.appendChild(notifElem);
+			
+			Element verboseElem = doc.createElement("Verbose");
+			verboseElem.setTextContent(String.valueOf(isVerbose()));
+			root.appendChild(verboseElem);
+						
+			saveXml();
+			
+			readPluginConfiguration();
+			
+		} 
+		catch (ParserConfigurationException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	}
+	
+	private void createNewPluginConfiguration()
 	{
 		DocumentBuilderFactory factory   = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;

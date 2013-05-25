@@ -6,8 +6,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.event.Event;
-import org.bukkit.event.Event.Priority;
 
 public class ServerBrowser extends JavaPlugin 
 {
@@ -36,8 +34,7 @@ public class ServerBrowser extends JavaPlugin
 		
 		
 		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
+		pm.registerEvents(playerListener,this);
 		
 		PluginCommand sbCommand = getCommand("sb");
 		if(sbCommand == null)

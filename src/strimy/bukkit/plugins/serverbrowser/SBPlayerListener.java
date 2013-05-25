@@ -1,10 +1,11 @@
 package strimy.bukkit.plugins.serverbrowser;
 
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class SBPlayerListener extends PlayerListener 
+public class SBPlayerListener implements Listener 
 {
 	ServerBrowser plugin;
 	public SBPlayerListener(ServerBrowser plugin) 
@@ -12,17 +13,15 @@ public class SBPlayerListener extends PlayerListener
 		this.plugin = plugin;
 	}
 	
-	@Override
+	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) 
 	{
 		plugin.sender.sendInfos(null);
-		super.onPlayerJoin(event);
 	}
 	
-	@Override
+	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) 
 	{
 		plugin.sender.sendInfos(event.getPlayer());
-		super.onPlayerQuit(event);
 	}
 }
